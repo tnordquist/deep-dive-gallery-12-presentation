@@ -1,4 +1,4 @@
-package edu.cnm.deepdive.deepdivegallery12presentation;
+package edu.cnm.deepdive.deepdivegallery12presentation.controller;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.fragment.NavHostFragment;
+import edu.cnm.deepdive.deepdivegallery12presentation.R;
 
 public class SecondFragment extends Fragment {
 
