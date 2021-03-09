@@ -72,6 +72,9 @@ dependencies {
     // Google Sign In dependency
     implementation 'com.google.android.gms:play-services-auth:19.0.0'
 
+    // Gson (Google JSON parser) dependency
+    implementation 'com.google.code.gson:gson:2.8.6'
+
     // Retrofit (REST client) with ReactiveX & Gson integration
     def retrofit_version = '2.9.0'
     implementation "com.squareup.retrofit2:retrofit:$retrofit_version"
