@@ -26,7 +26,7 @@ public class UserRepository {
     return signInService.refresh()
         .observeOn(Schedulers.io())
         .flatMap((account) -> webService.getProfile(getBearerToken(account.getIdToken()))
-        .subscribeOn(Schedulers.io()));
+            .subscribeOn(Schedulers.io()));
   }
 
   private String getBearerToken(String idToken) {

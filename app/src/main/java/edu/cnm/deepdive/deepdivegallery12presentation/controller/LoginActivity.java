@@ -24,8 +24,7 @@ public class LoginActivity extends AppCompatActivity {
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     service = GoogleSignInService.getInstance();
-    userRepository = new UserRepository(this);
-
+    //noinspection ResultOfMethodCallIgnored
     service.refresh()
         .subscribe(
             this::updateAndSwitch,
@@ -42,18 +41,12 @@ public class LoginActivity extends AppCompatActivity {
   protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
     if (requestCode == LOGIN_REQUEST_CODE) {
       service.completeSignIn(data)
-          .addOnSuccessListener((account) -> switchToMain())
+          .addOnSuccessListener(this::updateAndSwitch)
           .addOnFailureListener((throwable) ->
               Toast.makeText(this, R.string.login_failure_message, Toast.LENGTH_LONG).show());
     } else {
       super.onActivityResult(requestCode, resultCode, data);
     }
-  }
-
-  private void switchToMain() {
-    Intent intent = new Intent(this, MainActivity.class)
-        .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-    startActivity(intent);
   }
 
   private void updateAndSwitch(GoogleSignInAccount account) {
