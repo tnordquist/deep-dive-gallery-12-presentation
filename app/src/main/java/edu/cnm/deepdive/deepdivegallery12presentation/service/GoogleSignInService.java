@@ -9,8 +9,10 @@ import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.api.ApiException;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import edu.cnm.deepdive.deepdivegallery12presentation.BuildConfig;
+import io.reactivex.Single;
 
 public class GoogleSignInService {
 
@@ -42,45 +44,53 @@ public class GoogleSignInService {
     return account;
   }
 
-  public Task<GoogleSignInAccount> refresh() {
-    return client.silentSignIn()
-        .addOnSuccessListener(this::setAccount);
+  public Single<GoogleSignInAccount> refresh() {
+    return Single.create((emitter) ->
+        client.silentSignIn()
+            .addOnSuccessListener(this::setAccount)
+            .addOnSuccessListener(new OnSuccessListener<GoogleSignInAccount>() {
+              @Override
+              public void onSuccess(GoogleSignInAccount t) {
+                emitter.onSuccess(t);
+              }
+            })
+            .addOnFailureListener(emitter::onError)
+    );
   }
-
-  public void startSignIn(Activity activity, int requestCode) {
-    account = null;
-    Intent intent = client.getSignInIntent();
-    activity.startActivityForResult(intent, requestCode);
-  }
-
-  public Task<GoogleSignInAccount> completeSignIn(Intent data) {
-    Task<GoogleSignInAccount> task = null;
-    try {
-      task = GoogleSignIn.getSignedInAccountFromIntent(data);
-      setAccount(task.getResult(ApiException.class));
-    } catch (ApiException e) {
-      // Exception will be passed automatically to onFailureListener.
+    public void startSignIn (Activity activity,int requestCode){
+      account = null;
+      Intent intent = client.getSignInIntent();
+      activity.startActivityForResult(intent, requestCode);
     }
-    return task;
-  }
 
-  public Task<Void> signOut() {
-    return client.signOut()
-        .addOnCompleteListener((ignored) -> setAccount(null));
-  }
-
-  private void setAccount(GoogleSignInAccount account) {
-    this.account = account;
-    if (account != null) {
-      //noinspection ConstantConditions
-      Log.d(getClass().getSimpleName(), account.getIdToken());
+    public Task<GoogleSignInAccount> completeSignIn (Intent data){
+      Task<GoogleSignInAccount> task = null;
+      try {
+        task = GoogleSignIn.getSignedInAccountFromIntent(data);
+        setAccount(task.getResult(ApiException.class));
+      } catch (ApiException e) {
+        // Exception will be passed automatically to onFailureListener.
+      }
+      return task;
     }
-  }
 
-  private static class InstanceHolder {
+    public Task<Void> signOut () {
+      return client.signOut()
+          .addOnCompleteListener((ignored) -> setAccount(null));
+    }
 
-    private static final GoogleSignInService INSTANCE = new GoogleSignInService();
+    private void setAccount (GoogleSignInAccount account){
+      this.account = account;
+      if (account != null) {
+        //noinspection ConstantConditions
+        Log.d(getClass().getSimpleName() + " Bearer token: ", account.getIdToken());
+      }
+    }
 
-  }
+    private static class InstanceHolder {
+
+      private static final GoogleSignInService INSTANCE = new GoogleSignInService();
+
+    }
 
 } 
