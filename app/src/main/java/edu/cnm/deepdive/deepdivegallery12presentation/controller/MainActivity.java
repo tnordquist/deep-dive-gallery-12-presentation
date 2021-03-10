@@ -2,7 +2,9 @@ package edu.cnm.deepdive.deepdivegallery12presentation.controller;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Toast;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
@@ -12,6 +14,7 @@ import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 import edu.cnm.deepdive.deepdivegallery12presentation.R;
+import edu.cnm.deepdive.deepdivegallery12presentation.model.User;
 import edu.cnm.deepdive.deepdivegallery12presentation.service.GoogleSignInService;
 import edu.cnm.deepdive.deepdivegallery12presentation.viewmodel.MainViewModel;
 

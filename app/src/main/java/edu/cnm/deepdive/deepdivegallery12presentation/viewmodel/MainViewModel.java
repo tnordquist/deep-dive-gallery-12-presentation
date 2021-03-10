@@ -49,7 +49,7 @@ public class MainViewModel extends AndroidViewModel implements LifecycleObserver
     pending.add(
         userRepository.getServerUserProfile()
             .subscribe(
-                (user) -> Log.d(getClass().getSimpleName(), user.getName()),
+                user::postValue,
                 throwable::postValue
             )
     );
