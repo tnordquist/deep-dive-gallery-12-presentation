@@ -27,7 +27,7 @@ public class LoginActivity extends AppCompatActivity {
     //noinspection ResultOfMethodCallIgnored
     service.refresh()
         .subscribe(
-            this::updateAndSwitch,
+            this::switchToMain,
             (throwable) -> {
               binding = ActivityLoginBinding.inflate(getLayoutInflater());
               binding.signIn
@@ -41,7 +41,7 @@ public class LoginActivity extends AppCompatActivity {
   protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
     if (requestCode == LOGIN_REQUEST_CODE) {
       service.completeSignIn(data)
-          .addOnSuccessListener(this::updateAndSwitch)
+          .addOnSuccessListener(this::switchToMain)
           .addOnFailureListener((throwable) ->
               Toast.makeText(this, R.string.login_failure_message, Toast.LENGTH_LONG).show());
     } else {
@@ -49,7 +49,7 @@ public class LoginActivity extends AppCompatActivity {
     }
   }
 
-  private void updateAndSwitch(GoogleSignInAccount account) {
+  private void switchToMain(GoogleSignInAccount account) {
     Intent intent = new Intent(this, MainActivity.class)
         .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
     startActivity(intent);
