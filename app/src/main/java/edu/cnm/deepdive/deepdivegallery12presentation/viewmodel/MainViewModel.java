@@ -1,7 +1,8 @@
 package edu.cnm.deepdive.deepdivegallery12presentation.viewmodel;
 
-import android.annotation.SuppressLint;
 import android.app.Application;
+import android.net.Uri;
+import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.Lifecycle.Event;
@@ -11,28 +12,27 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.OnLifecycleEvent;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import edu.cnm.deepdive.deepdivegallery12presentation.model.User;
+import edu.cnm.deepdive.deepdivegallery12presentation.service.ImageRepository;
 import edu.cnm.deepdive.deepdivegallery12presentation.service.UserRepository;
 import io.reactivex.disposables.CompositeDisposable;
-import org.jetbrains.annotations.NotNull;
 
 public class MainViewModel extends AndroidViewModel implements LifecycleObserver {
 
   private final UserRepository userRepository;
+  private final ImageRepository imageRepository;
   private final MutableLiveData<GoogleSignInAccount> account;
   private final MutableLiveData<User> user;
   private final MutableLiveData<Throwable> throwable;
   private final CompositeDisposable pending;
 
-  @SuppressLint("CheckResult")
-  public MainViewModel(
-      @NonNull @NotNull Application application) {
+  public MainViewModel(@NonNull Application application) {
     super(application);
     userRepository = new UserRepository(application);
-    account = new MutableLiveData<GoogleSignInAccount>(userRepository.getAccount());
+    imageRepository = new ImageRepository(application);
+    account = new MutableLiveData<>(userRepository.getAccount());
     user = new MutableLiveData<>();
     throwable = new MutableLiveData<>();
     pending = new CompositeDisposable();
-    testRoundTrip();
   }
 
   public LiveData<User> getUser() {
@@ -43,13 +43,14 @@ public class MainViewModel extends AndroidViewModel implements LifecycleObserver
     return throwable;
   }
 
-  @SuppressLint("CheckResult")
-  private void testRoundTrip() {
+  public void store(Uri uri, String title, String description) {
+    throwable.setValue(null);
     pending.add(
-        userRepository.getServerUserProfile()
+        imageRepository
+            .add(uri, title, description)
             .subscribe(
-                user::postValue,
-                throwable::postValue
+                (image) -> {/* TODO Display success, etc. */},
+                this::postThrowable
             )
     );
   }
@@ -57,6 +58,11 @@ public class MainViewModel extends AndroidViewModel implements LifecycleObserver
   @OnLifecycleEvent(Event.ON_STOP)
   private void clearPending() {
     pending.clear();
+  }
+
+  private void postThrowable(Throwable throwable) {
+    Log.e(getClass().getName(), throwable.getMessage(), throwable);
+    this.throwable.postValue(throwable);
   }
 
 }

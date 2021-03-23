@@ -1,7 +1,6 @@
 package edu.cnm.deepdive.deepdivegallery12presentation.model;
 
 import com.google.gson.annotations.Expose;
-import java.net.URL;
 import java.util.Date;
 import java.util.UUID;
 
@@ -14,13 +13,10 @@ public class User {
   private Date created;
 
   @Expose
-  private Date updated;
+  private Date connected;
 
   @Expose
-  private String name;
-
-  @Expose
-  private URL href;
+  private String displayName;
 
   public UUID getId() {
     return id;
@@ -38,28 +34,19 @@ public class User {
     this.created = created;
   }
 
-  public Date getUpdated() {
-    return updated;
+  public Date getConnected() {
+    return connected;
   }
 
-  public void setUpdated(Date updated) {
-    this.updated = updated;
+  public void setConnected(Date connected) {
+    this.connected = connected;
   }
 
-  public String getName() {
-    return name;
+  public String getDisplayName() {
+    return displayName;
   }
 
-  public void setName(String name) {
-    this.name = name;
+  public void setDisplayName(String displayName) {
+    this.displayName = displayName;
   }
-
-  public URL getHref() {
-    return href;
-  }
-
-  public void setHref(URL href) {
-    this.href = href;
-  }
-
 }

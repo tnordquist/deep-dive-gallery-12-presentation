@@ -2,19 +2,14 @@ package edu.cnm.deepdive.deepdivegallery12presentation.controller;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
-import android.widget.Toast;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProvider;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.lifecycle.ViewModelProvider;
 import edu.cnm.deepdive.deepdivegallery12presentation.R;
-import edu.cnm.deepdive.deepdivegallery12presentation.model.User;
 import edu.cnm.deepdive.deepdivegallery12presentation.service.GoogleSignInService;
 import edu.cnm.deepdive.deepdivegallery12presentation.viewmodel.MainViewModel;
 
@@ -29,21 +24,13 @@ public class MainActivity extends AppCompatActivity {
     Toolbar toolbar = findViewById(R.id.toolbar);
     setSupportActionBar(toolbar);
     setUpViewModel();
-
-    FloatingActionButton fab = findViewById(R.id.fab);
-    fab.setOnClickListener(new View.OnClickListener() {
-      @Override
-      public void onClick(View view) {
-        Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-            .setAction("Action", null).show();
-      }
-    });
   }
 
   private void setUpViewModel() {
     viewModel = new ViewModelProvider(this).get(MainViewModel.class);
+    getLifecycle().addObserver(viewModel);
     viewModel.getThrowable().observe(this, (throwable) -> {
-      if (throwable != null) {
+      if(throwable != null) {
         Toast.makeText(this, throwable.getLocalizedMessage(), Toast.LENGTH_LONG).show();
       }
     });
@@ -58,6 +45,7 @@ public class MainActivity extends AppCompatActivity {
 
   @Override
   public boolean onOptionsItemSelected(MenuItem item) {
+
     boolean handled = true;
     switch (item.getItemId()) {
       case R.id.sign_out:
@@ -66,7 +54,13 @@ public class MainActivity extends AppCompatActivity {
       default:
         handled = super.onOptionsItemSelected(item);
     }
+
     return handled;
+  }
+
+  @Override
+  protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+    super.onActivityResult(requestCode, resultCode, data);
   }
 
   private void logout() {
@@ -77,4 +71,5 @@ public class MainActivity extends AppCompatActivity {
           startActivity(intent);
         });
   }
+
 }

@@ -12,6 +12,7 @@ public class UserRepository {
   private final GalleryServiceProxy webService;
   private final GoogleSignInService signInService;
 
+
   public UserRepository(Context context) {
     this.context = context;
     signInService = GoogleSignInService.getInstance();
@@ -22,7 +23,7 @@ public class UserRepository {
     return signInService.getAccount();
   }
 
-  public Single<User> getServerUserProfile() {
+  public Single<User> getUserProfile() {
     return signInService.refresh()
         .observeOn(Schedulers.io())
         .flatMap((account) -> webService.getProfile(getBearerToken(account.getIdToken()))
