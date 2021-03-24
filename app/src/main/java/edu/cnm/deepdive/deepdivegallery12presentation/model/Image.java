@@ -13,7 +13,7 @@ public class Image {
   private Date created;
 
   @Expose
-  private Date updated;
+  private String name;
 
   @Expose
   private String title;
@@ -22,16 +22,13 @@ public class Image {
   private String description;
 
   @Expose
-  private String name;
-
-  @Expose
   private String contentType;
 
   @Expose
+  private String href;
+
+  @Expose
   private User contributor;
-
-//  private Gallery gallery;
-
 
   public UUID getId() {
     return id;
@@ -49,12 +46,12 @@ public class Image {
     this.created = created;
   }
 
-  public Date getUpdated() {
-    return updated;
+  public String getName() {
+    return name;
   }
 
-  public void setUpdated(Date updated) {
-    this.updated = updated;
+  public void setName(String name) {
+    this.name = name;
   }
 
   public String getTitle() {
@@ -73,20 +70,20 @@ public class Image {
     this.description = description;
   }
 
-  public String getName() {
-    return name;
-  }
-
-  public void setName(String name) {
-    this.name = name;
-  }
-
   public String getContentType() {
     return contentType;
   }
 
   public void setContentType(String contentType) {
     this.contentType = contentType;
+  }
+
+  public String getHref() {
+    return href;
+  }
+
+  public void setHref(String href) {
+    this.href = href;
   }
 
   public User getContributor() {
@@ -96,5 +93,4 @@ public class Image {
   public void setContributor(User contributor) {
     this.contributor = contributor;
   }
-
 }

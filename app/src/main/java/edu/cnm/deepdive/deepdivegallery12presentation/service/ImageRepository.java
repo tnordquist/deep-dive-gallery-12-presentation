@@ -13,6 +13,7 @@ import java.io.File;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
+import java.util.List;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
@@ -31,6 +32,12 @@ public class ImageRepository {
     signInService = GoogleSignInService.getInstance();
     resolver = context.getContentResolver();
     multipartFormType = MediaType.parse("multipart/form-data");
+  }
+
+  public Single<List<Image>> getAll() {
+    return signInService.refreshBearerToken()
+        .observeOn(Schedulers.io())
+        .flatMap(serviceProxy::getAllImages);
   }
 
   @SuppressWarnings("BlockingMethodInNonBlockingContext")

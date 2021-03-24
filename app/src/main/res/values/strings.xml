@@ -22,4 +22,6 @@
   <string name="image_title_hint">Title of image</string>
   <string name="image_description_hint">Description of image</string>
   <string name="sign_out">Sign out</string>
+  <string name="select_image_prompt">Select image</string>
+  <string name="action_refresh">Refresh</string>
 </resources>
