@@ -28,16 +28,11 @@ public class UploadPropertiesFragment extends DialogFragment implements TextWatc
   private AlertDialog dialog;
   private MainViewModel viewModel;
 
-  @Override
-  public void onCreate(Bundle savedInstanceState) {
-    super.onCreate(savedInstanceState);
-    //noinspection ConstantConditions
-    uri = UploadPropertiesFragmentArgs.fromBundle(getArguments()).getContentUri();
-  }
-
   @NonNull
   @Override
   public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
+    //noinspection ConstantConditions
+    uri = UploadPropertiesFragmentArgs.fromBundle(getArguments()).getContentUri();
     binding =
         FragmentUploadPropertiesBinding.inflate(LayoutInflater.from(getContext()), null, false);
     dialog = new Builder(getContext())
@@ -93,7 +88,7 @@ public class UploadPropertiesFragment extends DialogFragment implements TextWatc
   private void upload() {
     String title = binding.title.getText().toString().trim();
     String description = binding.description.getText().toString().trim();
-    viewModel.store(uri, title, (description.isEmpty() ? null : description));
+    viewModel.storeImage(uri, title, (description.isEmpty() ? null : description));
   }
 
 }

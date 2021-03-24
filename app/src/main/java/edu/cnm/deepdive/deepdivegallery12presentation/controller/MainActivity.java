@@ -26,12 +26,18 @@ public class MainActivity extends AppCompatActivity {
     setUpViewModel();
   }
 
+
   private void setUpViewModel() {
     viewModel = new ViewModelProvider(this).get(MainViewModel.class);
     getLifecycle().addObserver(viewModel);
     viewModel.getThrowable().observe(this, (throwable) -> {
       if(throwable != null) {
         Toast.makeText(this, throwable.getLocalizedMessage(), Toast.LENGTH_LONG).show();
+      }
+    });
+    viewModel.getUser().observe(this, (user) -> {
+      if (user == null) {
+        switchToLogin();
       }
     });
   }
@@ -45,8 +51,8 @@ public class MainActivity extends AppCompatActivity {
 
   @Override
   public boolean onOptionsItemSelected(MenuItem item) {
-
     boolean handled = true;
+
     switch (item.getItemId()) {
       case R.id.sign_out:
         logout();
@@ -54,7 +60,6 @@ public class MainActivity extends AppCompatActivity {
       default:
         handled = super.onOptionsItemSelected(item);
     }
-
     return handled;
   }
 
@@ -72,4 +77,10 @@ public class MainActivity extends AppCompatActivity {
         });
   }
 
+  private void switchToLogin() {
+    startActivity(
+        new Intent(this, LoginActivity.class)
+            .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK)
+    );
+  }
 }
