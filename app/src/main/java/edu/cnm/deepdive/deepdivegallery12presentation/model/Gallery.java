@@ -1,25 +1,21 @@
 package edu.cnm.deepdive.deepdivegallery12presentation.model;
 
+import android.media.Image;
 import com.google.gson.annotations.Expose;
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 
-public class Image implements Serializable {
+public class Gallery implements Serializable {
 
-  private static final long serialVersionUID = -8379334551653392484L;
+  private static final long serialVersionUID = 2723203273848490920L;
 
-  public Image(String imageUrl) {
-    href = imageUrl;
-  }
   @Expose
   private UUID id;
 
   @Expose
   private Date created;
-
-  @Expose
-  private String name;
 
   @Expose
   private String title;
@@ -28,13 +24,13 @@ public class Image implements Serializable {
   private String description;
 
   @Expose
-  private String contentType;
-
-  @Expose
   private String href;
 
   @Expose
   private User contributor;
+
+  @Expose
+  private List<Image> images;
 
   public UUID getId() {
     return id;
@@ -50,14 +46,6 @@ public class Image implements Serializable {
 
   public void setCreated(Date created) {
     this.created = created;
-  }
-
-  public String getName() {
-    return name;
-  }
-
-  public void setName(String name) {
-    this.name = name;
   }
 
   public String getTitle() {
@@ -76,14 +64,6 @@ public class Image implements Serializable {
     this.description = description;
   }
 
-  public String getContentType() {
-    return contentType;
-  }
-
-  public void setContentType(String contentType) {
-    this.contentType = contentType;
-  }
-
   public String getHref() {
     return href;
   }
@@ -98,5 +78,13 @@ public class Image implements Serializable {
 
   public void setContributor(User contributor) {
     this.contributor = contributor;
+  }
+
+  public List<Image> getImages() {
+    return images;
+  }
+
+  public void setImages(List<Image> images) {
+    this.images = images;
   }
 }

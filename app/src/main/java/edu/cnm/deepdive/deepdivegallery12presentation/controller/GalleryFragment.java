@@ -16,38 +16,36 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import edu.cnm.deepdive.deepdivegallery12presentation.NavGraphDirections;
 import edu.cnm.deepdive.deepdivegallery12presentation.NavGraphDirections.OpenUploadProperties;
 import edu.cnm.deepdive.deepdivegallery12presentation.R;
 import edu.cnm.deepdive.deepdivegallery12presentation.adapter.GalleryAdapter;
+import edu.cnm.deepdive.deepdivegallery12presentation.adapter.GalleryAdapter.OnGalleryClickHelper;
 import edu.cnm.deepdive.deepdivegallery12presentation.databinding.FragmentGalleryBinding;
 import edu.cnm.deepdive.deepdivegallery12presentation.model.Image;
-import edu.cnm.deepdive.deepdivegallery12presentation.viewmodel.MainViewModel;
+import edu.cnm.deepdive.deepdivegallery12presentation.viewmodel.GalleryViewModel;
+import edu.cnm.deepdive.deepdivegallery12presentation.viewmodel.ImageViewModel;
 import java.util.List;
 import org.jetbrains.annotations.NotNull;
 
-public class GalleryFragment extends Fragment {
+public class GalleryFragment extends Fragment implements OnGalleryClickHelper {
 
   private static final int PICK_IMAGE_REQUEST = 1023;
   private FragmentGalleryBinding binding;
-  private MainViewModel viewModel;
+  private GalleryViewModel galleryViewModel;
+  private ImageViewModel imageViewModel;
   private GalleryAdapter adapter;
 
   @Override
-  public void onCreate(@Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
+  public void onCreate(@Nullable Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setHasOptionsMenu(true);
   }
 
   public View onCreateView(@NonNull
       LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-    binding = FragmentGalleryBinding.inflate(inflater, container, false);
-    Context context = getContext();
-    int span = (int) Math.floor(context.getResources().getDisplayMetrics().widthPixels
-        / context.getResources().getDimension(R.dimen.gallery_item_width));
-    binding.galleryView.setLayoutManager(new GridLayoutManager(context, span));
-    adapter = new GalleryAdapter(context);
-    binding.galleryView.setAdapter(adapter);
+    binding = FragmentGalleryBinding.inflate(inflater);
     binding.addImage.setOnClickListener((v) -> {
       pickImage();
     });
@@ -57,9 +55,14 @@ public class GalleryFragment extends Fragment {
   @Override
   public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
     super.onViewCreated(view, savedInstanceState);
-    viewModel = new ViewModelProvider(getActivity()).get(MainViewModel.class);
-    viewModel.getImages().observe(getViewLifecycleOwner(), this::updateGallery);
-    viewModel.getImage().observe(getViewLifecycleOwner(), this::updateGallery);
+    //noinspection ConstantConditions
+    galleryViewModel = new ViewModelProvider(getActivity()).get(GalleryViewModel.class);
+    imageViewModel = new ViewModelProvider(getActivity()).get(ImageViewModel.class);
+    galleryViewModel.getGalleries().observe(getViewLifecycleOwner(), (galleries) -> {
+      if (galleries != null) {
+        binding.galleryView.setAdapter(new GalleryAdapter(getContext(), galleries, this));
+      }
+    });
   }
 
 
@@ -70,19 +73,21 @@ public class GalleryFragment extends Fragment {
     inflater.inflate(R.menu.menu_gallery, menu);
   }
 
+
   @Override
   public boolean onOptionsItemSelected(@NonNull MenuItem item) {
     boolean handled = true;
     //noinspection SwitchStatementWithTooFewBranches
     switch (item.getItemId()) {
       case R.id.action_refresh:
-        viewModel.loadImages();
+        imageViewModel.loadImages();
         break;
       default:
         handled = super.onOptionsItemSelected(item);
     }
     return handled;
   }
+
 
   @Override
   public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
@@ -101,18 +106,16 @@ public class GalleryFragment extends Fragment {
         PICK_IMAGE_REQUEST);
   }
 
+/*
   private void updateGallery(List<Image> images) {
-    adapter.getImages().clear();
+    .getImages().clear();
     adapter.getImages().addAll(images);
     adapter.notifyDataSetChanged();
   }
+*/
 
-  private void updateGallery(Image image) {
-    List<Image> images = adapter.getImages();
-    if (image != null && !images.contains(image)) {
-      images.add(0, image);
-      adapter.notifyItemInserted(0);
-    }
+  @Override
+  public void onGalleryClick(String galleryId, View view, int position) {
+
   }
-
 }
