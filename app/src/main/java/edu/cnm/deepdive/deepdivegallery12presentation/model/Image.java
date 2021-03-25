@@ -5,9 +5,9 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.UUID;
 
-public class Image implements Serializable {
+public class Image implements Serializable{
 
-  private static final long serialVersionUID = -8379334551653392484L;
+  private static final long serialVersionUID = 6988040213534465538L;
 
   public Image(String imageUrl) {
     href = imageUrl;

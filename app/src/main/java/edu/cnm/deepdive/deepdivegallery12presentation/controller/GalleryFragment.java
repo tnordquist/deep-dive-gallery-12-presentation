@@ -65,7 +65,6 @@ public class GalleryFragment extends Fragment implements OnGalleryClickHelper {
     });
   }
 
-
   @Override
   public void onCreateOptionsMenu(@NonNull @NotNull Menu menu,
       @NonNull MenuInflater inflater) {
@@ -106,6 +105,7 @@ public class GalleryFragment extends Fragment implements OnGalleryClickHelper {
         PICK_IMAGE_REQUEST);
   }
 
+  // TODO Add functionality to update list of galleries.
 /*
   private void updateGallery(List<Image> images) {
     .getImages().clear();
@@ -116,6 +116,9 @@ public class GalleryFragment extends Fragment implements OnGalleryClickHelper {
 
   @Override
   public void onGalleryClick(String galleryId, View view, int position) {
-
+    GalleryFragmentDirections.GalleryFragmentToImageFragment toImageFragment = GalleryFragmentDirections
+        .galleryFragmentToImageFragment(galleryId);
+    toImageFragment.setGalleryImages(galleryId);
+    Navigation.findNavController(view).navigate(toImageFragment);
   }
 }

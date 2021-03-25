@@ -54,7 +54,7 @@ public class GalleryAdapter extends RecyclerView.Adapter<Holder> {
       super(binding.getRoot());
       this.binding = binding;
       this.onGalleryClickHelper = onGalleryClickHelper;
-      binding.getRoot().setOnClickListener((OnClickListener) this);
+      binding.getRoot().setOnClickListener(this);
     }
 
     private void bind(int position) {

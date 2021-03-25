@@ -69,6 +69,17 @@ dependencies {
     implementation "androidx.navigation:navigation-fragment:$navigationVersion"
     implementation "androidx.navigation:navigation-ui:$navigationVersion"
 
+    // Lifecycle (LiveData and ViewModel) dependencies
+    def lifecycle_version = '2.2.0'
+    //noinspection GradleDependency
+    implementation "androidx.lifecycle:lifecycle-runtime:$lifecycle_version"
+    //noinspection GradleDependency
+    implementation "androidx.lifecycle:lifecycle-livedata:$lifecycle_version"
+    //noinspection GradleDependency
+    implementation "androidx.lifecycle:lifecycle-viewmodel:$lifecycle_version"
+    //noinspection GradleDependency
+    implementation "androidx.lifecycle:lifecycle-common-java8:$lifecycle_version"
+
     // Google Sign In dependency
     implementation 'com.google.android.gms:play-services-auth:19.0.0'
 

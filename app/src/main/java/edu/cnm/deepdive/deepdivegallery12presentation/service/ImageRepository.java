@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.provider.OpenableColumns;
 import android.util.Log;
+import edu.cnm.deepdive.deepdivegallery12presentation.model.Gallery;
 import edu.cnm.deepdive.deepdivegallery12presentation.model.Image;
 import io.reactivex.Single;
 import io.reactivex.schedulers.Schedulers;
@@ -14,6 +15,7 @@ import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
 import java.util.List;
+import java.util.UUID;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
@@ -40,8 +42,14 @@ public class ImageRepository {
         .flatMap(serviceProxy::getAllImages);
   }
 
+  public Single<Gallery> getGalleryForImages(UUID galleryId) {
+    return signInService.refreshBearerToken()
+        .observeOn(Schedulers.io())
+        .flatMap(serviceProxy::getGallery);
+  }
+
   @SuppressWarnings("BlockingMethodInNonBlockingContext")
-  public Single<Image> add(Uri uri, String title, String description) {
+  public Single<Image> add(UUID galleryId, Uri uri, String title, String description) {
     File[] filesCreated = new File[1];
     return signInService
         .refreshBearerToken()
