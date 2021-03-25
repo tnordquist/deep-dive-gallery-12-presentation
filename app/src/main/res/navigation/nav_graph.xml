@@ -17,12 +17,12 @@
 
   <fragment
     android:id="@+id/GalleryFragment"
-    android:label="@string/first_fragment_label"
+    android:label="@string/gallery_fragment_label"
     android:name="edu.cnm.deepdive.deepdivegallery12presentation.controller.GalleryFragment"
     tools:layout="@layout/fragment_gallery">
 
     <action
-      android:id="@+id/action_FirstFragment_to_SecondFragment"
+      android:id="@+id/GalleryFragment_to_SecondFragment"
       app:destination="@id/SecondFragment"/>
 
   </fragment>
@@ -34,7 +34,7 @@
     tools:layout="@layout/fragment_second">
 
     <action
-      android:id="@+id/action_SecondFragment_to_FirstFragment"
+      android:id="@+id/action_SecondFragment_to_GalleryFragment"
       app:destination="@id/GalleryFragment"/>
 
   </fragment>
