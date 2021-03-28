@@ -11,12 +11,14 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.OnLifecycleEvent;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import edu.cnm.deepdive.deepdivegallery12presentation.model.Gallery;
 import edu.cnm.deepdive.deepdivegallery12presentation.model.Image;
 import edu.cnm.deepdive.deepdivegallery12presentation.model.User;
 import edu.cnm.deepdive.deepdivegallery12presentation.service.ImageRepository;
 import edu.cnm.deepdive.deepdivegallery12presentation.service.UserRepository;
 import io.reactivex.disposables.CompositeDisposable;
 import java.util.List;
+import java.util.UUID;
 
 public class ImageViewModel extends AndroidViewModel implements LifecycleObserver {
 
@@ -26,6 +28,7 @@ public class ImageViewModel extends AndroidViewModel implements LifecycleObserve
   private final MutableLiveData<User> user;
   private final MutableLiveData<List<Image>> images;
   private final MutableLiveData<Image> image;
+  private final MutableLiveData<Gallery> gallery;
   private final MutableLiveData<Throwable> throwable;
   private final CompositeDisposable pending;
 
@@ -39,6 +42,7 @@ public class ImageViewModel extends AndroidViewModel implements LifecycleObserve
     images = new MutableLiveData<>();
     throwable = new MutableLiveData<>();
     pending = new CompositeDisposable();
+    gallery = new MutableLiveData<>();
     loadImages();
   }
 
@@ -54,15 +58,19 @@ public class ImageViewModel extends AndroidViewModel implements LifecycleObserve
     return image;
   }
 
+  public LiveData<Gallery> getGallery() {
+    return gallery;
+  }
+
   public LiveData<Throwable> getThrowable() {
     return throwable;
   }
 
-  public void store(Uri uri, String title, String description) {
+  public void store(UUID galleryId, Uri uri, String title, String description) {
     throwable.setValue(null);
     pending.add(
         imageRepository
-            .add(uri, title, description)
+            .add(galleryId,uri, title, description)
             .subscribe(
                 (image) -> loadImages(), // TODO explore updating list in place without refreshing.
                 this::postThrowable
@@ -71,7 +79,7 @@ public class ImageViewModel extends AndroidViewModel implements LifecycleObserve
   }
 
   public void loadImages() {
-    throwable.setValue(null);
+    throwable.postValue(null);
     pending.add(
         imageRepository.getAll()
             .subscribe(
@@ -81,7 +89,8 @@ public class ImageViewModel extends AndroidViewModel implements LifecycleObserve
     );
   }
 
-  public void storeImage(Uri uri, String title, String description) {
+  // TODO Modify to receive gallery id.
+/*  public void storeImage(Uri uri, String title, String description) {
     throwable.setValue(null);
     pending.add(
         imageRepository.add(uri, title, description)
@@ -90,7 +99,7 @@ public class ImageViewModel extends AndroidViewModel implements LifecycleObserve
                 throwable::postValue
             )
     );
-  }
+  }*/
 
   @OnLifecycleEvent(Event.ON_STOP)
   private void clearPending() {

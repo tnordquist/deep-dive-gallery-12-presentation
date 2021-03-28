@@ -1,6 +1,5 @@
 package edu.cnm.deepdive.deepdivegallery12presentation.model;
 
-import android.media.Image;
 import com.google.gson.annotations.Expose;
 import java.io.Serializable;
 import java.util.Date;

@@ -18,7 +18,11 @@ import androidx.lifecycle.ViewModelProvider;
 import com.squareup.picasso.Picasso;
 import edu.cnm.deepdive.deepdivegallery12presentation.R;
 import edu.cnm.deepdive.deepdivegallery12presentation.databinding.FragmentUploadPropertiesBinding;
+import edu.cnm.deepdive.deepdivegallery12presentation.model.Gallery;
+import edu.cnm.deepdive.deepdivegallery12presentation.viewmodel.GalleryViewModel;
 import edu.cnm.deepdive.deepdivegallery12presentation.viewmodel.ImageViewModel;
+import java.util.List;
+import java.util.UUID;
 
 public class UploadPropertiesFragment extends DialogFragment implements TextWatcher {
 
@@ -26,7 +30,11 @@ public class UploadPropertiesFragment extends DialogFragment implements TextWatc
   private FragmentUploadPropertiesBinding binding;
   private Uri uri;
   private AlertDialog dialog;
-  private ImageViewModel viewModel;
+  private GalleryViewModel galleryViewModel;
+  private ImageViewModel imageViewModel;
+  private Gallery gallery;
+  private List<Gallery> galleries;
+  String galleryTitle;
 
   @NonNull
   @Override
@@ -60,9 +68,13 @@ public class UploadPropertiesFragment extends DialogFragment implements TextWatc
         .load(uri)
         .into(binding.image);
     binding.title.addTextChangedListener(this);
+    binding.description.addTextChangedListener(this);
+    binding.galleryTitle.addTextChangedListener(this);
     //noinspection ConstantConditions
-    viewModel = new ViewModelProvider(getActivity()).get(ImageViewModel.class);
-    // TODO Observe as necessary.
+    imageViewModel = new ViewModelProvider(getActivity()).get(ImageViewModel.class);
+    galleryViewModel = new ViewModelProvider(getActivity()).get(GalleryViewModel.class);
+    galleryViewModel.getGalleries().observe(getViewLifecycleOwner(),
+        (galleries) -> UploadPropertiesFragment.this.galleries = galleries);
   }
 
   @Override
@@ -88,7 +100,15 @@ public class UploadPropertiesFragment extends DialogFragment implements TextWatc
   private void upload() {
     String title = binding.title.getText().toString().trim();
     String description = binding.description.getText().toString().trim();
-    viewModel.storeImage(uri, title, (description.isEmpty() ? null : description));
+    galleryTitle = binding.galleryTitle.getText().toString().trim();
+    String titleId = "";
+    for (Gallery g : galleries) {
+      if (g != null && galleryTitle.equalsIgnoreCase(g.getTitle())) {
+        titleId = g.getId().toString();
+      }
+    }
+    UUID uuid = UUID.fromString(titleId);
+    imageViewModel.store(uuid, uri, title, (description.isEmpty() ? null : description));
   }
 
 }

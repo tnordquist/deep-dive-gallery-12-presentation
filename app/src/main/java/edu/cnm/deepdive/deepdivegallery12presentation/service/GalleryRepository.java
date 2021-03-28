@@ -2,13 +2,10 @@ package edu.cnm.deepdive.deepdivegallery12presentation.service;
 
 import android.content.Context;
 import edu.cnm.deepdive.deepdivegallery12presentation.model.Gallery;
-import edu.cnm.deepdive.deepdivegallery12presentation.model.Image;
 import io.reactivex.Single;
-import io.reactivex.SingleSource;
-import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 import java.util.List;
-import org.jetbrains.annotations.NotNull;
+import java.util.UUID;
 
 public class GalleryRepository {
 
@@ -28,9 +25,10 @@ public class GalleryRepository {
         .flatMap(serviceProxy::getAllGalleries);
   }
 
-  public Single<Gallery> getGallery(String title) {
+  public Single<Gallery> getGalleryForImages(UUID galleryId) {
     return signInService.refreshBearerToken()
         .observeOn(Schedulers.io())
-        .flatMap(serviceProxy::getGallery);
+        .flatMap((account) -> serviceProxy.getGallery(galleryId,account));
   }
+
 }

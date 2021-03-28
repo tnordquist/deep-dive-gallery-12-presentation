@@ -1,7 +1,6 @@
 package edu.cnm.deepdive.deepdivegallery12presentation.viewmodel;
 
 import android.app.Application;
-import android.net.Uri;
 import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
@@ -10,21 +9,19 @@ import androidx.lifecycle.LifecycleObserver;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.OnLifecycleEvent;
-import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import edu.cnm.deepdive.deepdivegallery12presentation.model.Gallery;
 import edu.cnm.deepdive.deepdivegallery12presentation.model.Image;
-import edu.cnm.deepdive.deepdivegallery12presentation.model.User;
 import edu.cnm.deepdive.deepdivegallery12presentation.service.GalleryRepository;
-import edu.cnm.deepdive.deepdivegallery12presentation.service.ImageRepository;
-import edu.cnm.deepdive.deepdivegallery12presentation.service.UserRepository;
 import io.reactivex.disposables.CompositeDisposable;
 import java.util.List;
+import java.util.UUID;
 
 public class GalleryViewModel extends AndroidViewModel implements LifecycleObserver {
 
   private final GalleryRepository galleryRepository;
   private final MutableLiveData<List<Gallery>> galleries;
   private final MutableLiveData<Gallery> gallery;
+  private final MutableLiveData<List<Image>> galleryImages;
   private final MutableLiveData<Throwable> throwable;
   private final CompositeDisposable pending;
 
@@ -33,11 +30,11 @@ public class GalleryViewModel extends AndroidViewModel implements LifecycleObser
     galleryRepository = new GalleryRepository(application);
     gallery = new MutableLiveData<>();
     galleries = new MutableLiveData<>();
+    galleryImages = new MutableLiveData<>();
     throwable = new MutableLiveData<>();
     pending = new CompositeDisposable();
     loadGalleries();
   }
-
 
   public LiveData<List<Gallery>> getGalleries() {
     return galleries;
@@ -45,6 +42,10 @@ public class GalleryViewModel extends AndroidViewModel implements LifecycleObser
 
   public LiveData<Gallery> getGallery() {
     return gallery;
+  }
+
+  public LiveData<List<Image>> getGalleryImages() {
+    return galleryImages;
   }
 
   public LiveData<Throwable> getThrowable() {
@@ -57,6 +58,17 @@ public class GalleryViewModel extends AndroidViewModel implements LifecycleObser
         galleryRepository.getAll()
             .subscribe(
                 galleries::postValue,
+                throwable::postValue
+            )
+    );
+  }
+
+  public void getGalleryById(UUID galleryId) {
+    throwable.setValue(null);
+    pending.add(
+        galleryRepository.getGalleryForImages(galleryId)
+            .subscribe(
+                gallery::postValue,
                 throwable::postValue
             )
     );

@@ -22,9 +22,9 @@ public class GalleryAdapter extends RecyclerView.Adapter<Holder> {
   public GalleryAdapter(Context context, List<Gallery> galleries,
       OnGalleryClickHelper onGalleryClickHelper) {
     this.context = context;
-    inflater = LayoutInflater.from(context);
-    this.onGalleryClickHelper = onGalleryClickHelper;
     this.galleries = galleries;
+    this.onGalleryClickHelper = onGalleryClickHelper;
+    inflater = LayoutInflater.from(context);
   }
 
   @NonNull
@@ -54,7 +54,7 @@ public class GalleryAdapter extends RecyclerView.Adapter<Holder> {
       super(binding.getRoot());
       this.binding = binding;
       this.onGalleryClickHelper = onGalleryClickHelper;
-      binding.getRoot().setOnClickListener((OnClickListener) this);
+      binding.getRoot().setOnClickListener(this);
     }
 
     private void bind(int position) {
@@ -73,7 +73,6 @@ public class GalleryAdapter extends RecyclerView.Adapter<Holder> {
   }
 
   public interface OnGalleryClickHelper {
-
     void onGalleryClick(String galleryId, View view, int position);
   }
 }
