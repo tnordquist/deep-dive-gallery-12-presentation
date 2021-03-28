@@ -79,7 +79,7 @@ public class ImageViewModel extends AndroidViewModel implements LifecycleObserve
   }
 
   public void loadImages() {
-    throwable.setValue(null);
+    throwable.postValue(null);
     pending.add(
         imageRepository.getAll()
             .subscribe(
@@ -89,18 +89,7 @@ public class ImageViewModel extends AndroidViewModel implements LifecycleObserve
     );
   }
 
-  public void getGalleryForImages(UUID galleryId) {
-    throwable.setValue(null);
-    pending.add(
-        imageRepository.getGalleryForImages(galleryId)
-            .subscribe(
-                gallery::postValue,
-                throwable::postValue
-            )
-    );
-  }
-
-  // TODO Modify to receive gallry id.
+  // TODO Modify to receive gallery id.
 /*  public void storeImage(Uri uri, String title, String description) {
     throwable.setValue(null);
     pending.add(

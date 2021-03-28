@@ -27,4 +27,5 @@
   <string name="image_title">Image Title</string>
   <string name="image_description">Image Description</string>
   <string name="single_gallery_image">Single Gallery Image</string>
+  <string name="gallery_title_hint">Gallery Title</string>
 </resources>

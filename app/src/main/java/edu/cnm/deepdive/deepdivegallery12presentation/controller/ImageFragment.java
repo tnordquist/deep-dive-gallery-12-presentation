@@ -15,6 +15,7 @@ import edu.cnm.deepdive.deepdivegallery12presentation.adapter.ImageAdapter;
 import edu.cnm.deepdive.deepdivegallery12presentation.adapter.ImageAdapter.OnImageClickHelper;
 import edu.cnm.deepdive.deepdivegallery12presentation.databinding.FragmentImageBinding;
 import edu.cnm.deepdive.deepdivegallery12presentation.model.Image;
+import edu.cnm.deepdive.deepdivegallery12presentation.viewmodel.GalleryViewModel;
 import edu.cnm.deepdive.deepdivegallery12presentation.viewmodel.ImageViewModel;
 import java.util.UUID;
 import org.jetbrains.annotations.NotNull;
@@ -22,7 +23,7 @@ import org.jetbrains.annotations.NotNull;
 public class ImageFragment extends Fragment implements OnImageClickHelper{
 
   private FragmentImageBinding binding;
-  private ImageViewModel viewModel;
+  private GalleryViewModel viewModel;
   public UUID galleryId;
 
   @Override
@@ -43,14 +44,14 @@ public class ImageFragment extends Fragment implements OnImageClickHelper{
       @Nullable Bundle savedInstanceState) {
     super.onViewCreated(view, savedInstanceState);
     //noinspection ConstantConditions
-    viewModel = new ViewModelProvider(getActivity()).get(ImageViewModel.class);
+    viewModel = new ViewModelProvider(getActivity()).get(GalleryViewModel.class);
     if (getArguments() != null) {
       ImageFragmentArgs args = ImageFragmentArgs.fromBundle(getArguments());
       galleryId = UUID.fromString(args.getGalleryImages());
     }
-    viewModel.getGalleryForImages(galleryId);
+    viewModel.getGalleryById(galleryId);
     viewModel.getGallery().observe(getViewLifecycleOwner(), (gallery) -> {
-      if (gallery.getImages() != null) {
+      if (gallery != null) {
         binding.imageView.setAdapter(new ImageAdapter(getContext(), gallery.getImages(), this));
       }
     });

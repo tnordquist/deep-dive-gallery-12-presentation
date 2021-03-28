@@ -6,7 +6,6 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.provider.OpenableColumns;
 import android.util.Log;
-import edu.cnm.deepdive.deepdivegallery12presentation.model.Gallery;
 import edu.cnm.deepdive.deepdivegallery12presentation.model.Image;
 import io.reactivex.Single;
 import io.reactivex.schedulers.Schedulers;
@@ -42,12 +41,6 @@ public class ImageRepository {
         .flatMap(serviceProxy::getAllImages);
   }
 
-  public Single<Gallery> getGalleryForImages(UUID galleryId) {
-    return signInService.refreshBearerToken()
-        .observeOn(Schedulers.io())
-        .flatMap(serviceProxy::getGallery);
-  }
-
   @SuppressWarnings("BlockingMethodInNonBlockingContext")
   public Single<Image> add(UUID galleryId, Uri uri, String title, String description) {
     File[] filesCreated = new File[1];
@@ -73,9 +66,9 @@ public class ImageRepository {
             RequestBody titlePart = RequestBody.create(title, multipartFormType);
             if (description != null) {
               RequestBody descriptionPart = RequestBody.create(description, multipartFormType);
-              return serviceProxy.post(token, filePart, titlePart, descriptionPart);
+              return serviceProxy.post(galleryId,token, filePart, titlePart, descriptionPart);
             } else {
-              return serviceProxy.post(token, filePart, titlePart);
+              return serviceProxy.post(galleryId,token, filePart, titlePart);
             }
           }
         })

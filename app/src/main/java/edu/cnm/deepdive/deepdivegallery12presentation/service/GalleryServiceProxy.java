@@ -30,13 +30,13 @@ public interface GalleryServiceProxy {
   Single<User> getProfile(@Header("Authorization") String bearerToken);
 
   @Multipart
-  @POST("images")
-  Single<Image> post(@Header("Authorization") String bearerToken,
+  @POST("images/{id}")
+  Single<Image> post(@Path("id") UUID id, @Header("Authorization") String bearerToken,
       @Part MultipartBody.Part file, @Part("title") RequestBody title);
 
   @Multipart
-  @POST("images")
-  Single<Image> post(@Header("Authorization") String bearerToken,
+  @POST("images/{id}")
+  Single<Image> post(@Path("id") UUID id, @Header("Authorization") String bearerToken,
       @Part MultipartBody.Part file, @Part("title") RequestBody title,
       @Part("description") RequestBody description);
 
@@ -44,7 +44,7 @@ public interface GalleryServiceProxy {
   Single<List<Image>> getAllImages(@Header("Authorization") String bearerToken);
 
   @GET("galleries/{id}")
-  Single<Gallery> getGallery(@Header("Authorization") String bearerToken);
+  Single<Gallery> getGallery(@Path("id") UUID id, @Header("Authorization") String bearerToken);
 
   @GET("galleries")
   Single<List<Gallery>> getAllGalleries(@Header("Authorization") String bearerToken);

@@ -1,7 +1,6 @@
 package edu.cnm.deepdive.deepdivegallery12presentation.controller;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -15,18 +14,14 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import edu.cnm.deepdive.deepdivegallery12presentation.NavGraphDirections;
 import edu.cnm.deepdive.deepdivegallery12presentation.NavGraphDirections.OpenUploadProperties;
 import edu.cnm.deepdive.deepdivegallery12presentation.R;
 import edu.cnm.deepdive.deepdivegallery12presentation.adapter.GalleryAdapter;
 import edu.cnm.deepdive.deepdivegallery12presentation.adapter.GalleryAdapter.OnGalleryClickHelper;
 import edu.cnm.deepdive.deepdivegallery12presentation.databinding.FragmentGalleryBinding;
-import edu.cnm.deepdive.deepdivegallery12presentation.model.Image;
 import edu.cnm.deepdive.deepdivegallery12presentation.viewmodel.GalleryViewModel;
 import edu.cnm.deepdive.deepdivegallery12presentation.viewmodel.ImageViewModel;
-import java.util.List;
 import org.jetbrains.annotations.NotNull;
 
 public class GalleryFragment extends Fragment implements OnGalleryClickHelper {
