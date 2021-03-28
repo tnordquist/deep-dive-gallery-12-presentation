@@ -14,9 +14,9 @@ import com.google.android.material.snackbar.Snackbar;
 import edu.cnm.deepdive.deepdivegallery12presentation.adapter.ImageAdapter;
 import edu.cnm.deepdive.deepdivegallery12presentation.adapter.ImageAdapter.OnImageClickHelper;
 import edu.cnm.deepdive.deepdivegallery12presentation.databinding.FragmentImageBinding;
+import edu.cnm.deepdive.deepdivegallery12presentation.databinding.FragmentImageDialogBinding;
 import edu.cnm.deepdive.deepdivegallery12presentation.model.Image;
 import edu.cnm.deepdive.deepdivegallery12presentation.viewmodel.GalleryViewModel;
-import edu.cnm.deepdive.deepdivegallery12presentation.viewmodel.ImageViewModel;
 import java.util.UUID;
 import org.jetbrains.annotations.NotNull;
 
@@ -65,8 +65,8 @@ public class ImageFragment extends Fragment implements OnImageClickHelper{
 
   @Override
   public void onImageClick(Image image, int position) {
-   /* ImageDetailDialogFragment fragment = ImageDetailDialogFragment.newInstance(image);
-    fragment.show(getChildFragmentManager(), fragment.getClass().getName());*/
+    ImageDialogFragment fragment = ImageDialogFragment.newInstance(image);
+    fragment.show(getChildFragmentManager(), fragment.getClass().getName());
   }
 
   public interface OnFragmentInteractionListener {

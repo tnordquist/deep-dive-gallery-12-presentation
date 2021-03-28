@@ -73,7 +73,6 @@ public class GalleryAdapter extends RecyclerView.Adapter<Holder> {
   }
 
   public interface OnGalleryClickHelper {
-
     void onGalleryClick(String galleryId, View view, int position);
   }
 }

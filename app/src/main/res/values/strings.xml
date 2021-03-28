@@ -28,4 +28,10 @@
   <string name="image_description">Image Description</string>
   <string name="single_gallery_image">Single Gallery Image</string>
   <string name="gallery_title_hint">Gallery Title</string>
+  <string name="image_detail_description">Image</string>
+  <string name="image_url">Image Url</string>
+  <string name="image_id">Image Id</string>
+  <string name="image_datetime">Image Datetime</string>
+  <string name="image_type">Image Type</string>
+  <string name="close_image_dialog">close</string>
 </resources>
