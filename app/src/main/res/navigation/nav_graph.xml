@@ -11,6 +11,10 @@
     <argument
       android:name="content_uri"
       app:argType="android.net.Uri"/>
+    <argument
+      android:name="image_id"
+      app:argType="string"
+      app:nullable="true"/>
   </action>
 
   <fragment
@@ -40,6 +44,10 @@
     <argument
       android:name="content_uri"
       app:argType="android.net.Uri"/>
+    <argument
+      android:name="image_id"
+      app:argType="string"
+      app:nullable="true"/>
   </dialog>
 
 </navigation>

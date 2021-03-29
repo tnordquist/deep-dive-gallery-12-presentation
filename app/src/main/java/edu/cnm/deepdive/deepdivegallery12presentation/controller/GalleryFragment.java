@@ -87,7 +87,8 @@ public class GalleryFragment extends Fragment implements OnGalleryClickHelper {
   public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
     super.onActivityResult(requestCode, resultCode, data);
     if (requestCode == PICK_IMAGE_REQUEST && resultCode == Activity.RESULT_OK && data != null) {
-      OpenUploadProperties action = NavGraphDirections.openUploadProperties(data.getData());
+      OpenUploadProperties action = NavGraphDirections.openUploadProperties(data.getData(),
+          data.getDataString());
       Navigation.findNavController(binding.getRoot()).navigate(action);
     }
   }

@@ -17,10 +17,12 @@ import okhttp3.logging.HttpLoggingInterceptor.Level;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
+import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.Multipart;
 import retrofit2.http.POST;
+import retrofit2.http.PUT;
 import retrofit2.http.Part;
 import retrofit2.http.Path;
 
@@ -48,6 +50,10 @@ public interface GalleryServiceProxy {
 
   @GET("galleries")
   Single<List<Gallery>> getAllGalleries(@Header("Authorization") String bearerToken);
+
+  @PUT("galleries/{galleryId}/images/{imageId}")
+  Single<Boolean> put(@Path("galleryId") UUID galleryId, @Path("imageId") UUID imageId,
+      @Header("Authorization") String bearerToken, @Body RequestBody imageInGallery);
 
   static GalleryServiceProxy getInstance() {
     return InstanceHolder.INSTANCE;

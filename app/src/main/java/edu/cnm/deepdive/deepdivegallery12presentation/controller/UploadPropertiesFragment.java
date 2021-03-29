@@ -29,10 +29,10 @@ public class UploadPropertiesFragment extends DialogFragment implements TextWatc
 
   private FragmentUploadPropertiesBinding binding;
   private Uri uri;
+  private String imageId;
   private AlertDialog dialog;
   private GalleryViewModel galleryViewModel;
   private ImageViewModel imageViewModel;
-  private Gallery gallery;
   private List<Gallery> galleries;
   String galleryTitle;
 
@@ -41,8 +41,10 @@ public class UploadPropertiesFragment extends DialogFragment implements TextWatc
   public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
     //noinspection ConstantConditions
     uri = UploadPropertiesFragmentArgs.fromBundle(getArguments()).getContentUri();
+    imageId = UploadPropertiesFragmentArgs.fromBundle(getArguments()).getImageId();
     binding =
         FragmentUploadPropertiesBinding.inflate(LayoutInflater.from(getContext()), null, false);
+    //noinspection ConstantConditions
     dialog = new Builder(getContext())
         .setIcon(R.drawable.ic_upload)
         .setTitle(R.string.upload_properties_title)
@@ -74,7 +76,10 @@ public class UploadPropertiesFragment extends DialogFragment implements TextWatc
     imageViewModel = new ViewModelProvider(getActivity()).get(ImageViewModel.class);
     galleryViewModel = new ViewModelProvider(getActivity()).get(GalleryViewModel.class);
     galleryViewModel.getGalleries().observe(getViewLifecycleOwner(),
-        (galleries) -> UploadPropertiesFragment.this.galleries = galleries);
+        (galleries) -> {
+
+      UploadPropertiesFragment.this.galleries = galleries;
+    });
   }
 
   @Override

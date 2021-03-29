@@ -14,7 +14,6 @@ import com.google.android.material.snackbar.Snackbar;
 import edu.cnm.deepdive.deepdivegallery12presentation.adapter.ImageAdapter;
 import edu.cnm.deepdive.deepdivegallery12presentation.adapter.ImageAdapter.OnImageClickHelper;
 import edu.cnm.deepdive.deepdivegallery12presentation.databinding.FragmentImageBinding;
-import edu.cnm.deepdive.deepdivegallery12presentation.databinding.FragmentImageDialogBinding;
 import edu.cnm.deepdive.deepdivegallery12presentation.model.Image;
 import edu.cnm.deepdive.deepdivegallery12presentation.viewmodel.GalleryViewModel;
 import java.util.UUID;
