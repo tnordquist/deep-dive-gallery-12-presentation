@@ -70,7 +70,7 @@ public class ImageViewModel extends AndroidViewModel implements LifecycleObserve
     throwable.setValue(null);
     pending.add(
         imageRepository
-            .add(galleryId,uri, title, description)
+            .add(galleryId, uri, title, description)
             .subscribe(
                 (image) -> loadImages(), // TODO explore updating list in place without refreshing.
                 this::postThrowable
@@ -90,16 +90,16 @@ public class ImageViewModel extends AndroidViewModel implements LifecycleObserve
   }
 
   // TODO Modify to receive gallery id.
-/*  public void storeImage(Uri uri, String title, String description) {
+  public void storeImage(UUID galleryId, Uri uri, String title, String description) {
     throwable.setValue(null);
     pending.add(
-        imageRepository.add(uri, title, description)
+        imageRepository.add(galleryId, uri, title, description)
             .subscribe(
                 image::postValue,
                 throwable::postValue
             )
     );
-  }*/
+  }
 
   @OnLifecycleEvent(Event.ON_STOP)
   private void clearPending() {

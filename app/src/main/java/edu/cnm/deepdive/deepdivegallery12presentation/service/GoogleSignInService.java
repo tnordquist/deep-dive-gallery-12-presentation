@@ -3,6 +3,8 @@ package edu.cnm.deepdive.deepdivegallery12presentation.service;
 import android.app.Activity;
 import android.app.Application;
 import android.content.Intent;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -19,6 +21,7 @@ public class GoogleSignInService {
   private static Application context;
 
   private final GoogleSignInClient client;
+  private final MutableLiveData<String> bearerToken;
 
   private GoogleSignInAccount account;
 
@@ -30,6 +33,7 @@ public class GoogleSignInService {
         .requestIdToken(BuildConfig.CLIENT_ID)
         .build();
     client = GoogleSignIn.getClient(context, options);
+    bearerToken = new MutableLiveData<>();
   }
 
   public static void setContext(Application context) {
@@ -44,6 +48,11 @@ public class GoogleSignInService {
     return account;
   }
 
+  public LiveData<String> getBearerToken() {
+    return bearerToken;
+  }
+
+
   public Single<GoogleSignInAccount> refresh() {
     return Single.create((emitter) ->
         client.silentSignIn()
@@ -55,7 +64,11 @@ public class GoogleSignInService {
 
   public Single<String> refreshBearerToken() {
     return refresh()
-        .map((account) -> String.format(BEARER_TOKEN_FORMAT, account.getIdToken()));
+        .map((account) -> {
+          String token = String.format(BEARER_TOKEN_FORMAT, account.getIdToken());
+          bearerToken.postValue(token);
+          return token;
+        });
   }
 
   public void startSignIn(Activity activity, int requestCode) {

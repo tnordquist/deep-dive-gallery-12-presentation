@@ -53,7 +53,7 @@ public class GalleryViewModel extends AndroidViewModel implements LifecycleObser
   }
 
   public void loadGalleries() {
-    throwable.setValue(null);
+    throwable.postValue(null);
     pending.add(
         galleryRepository.getAll()
             .subscribe(
@@ -64,7 +64,7 @@ public class GalleryViewModel extends AndroidViewModel implements LifecycleObser
   }
 
   public void getGalleryById(UUID galleryId) {
-    throwable.setValue(null);
+    throwable.postValue(null);
     pending.add(
         galleryRepository.getGalleryForImages(galleryId)
             .subscribe(
