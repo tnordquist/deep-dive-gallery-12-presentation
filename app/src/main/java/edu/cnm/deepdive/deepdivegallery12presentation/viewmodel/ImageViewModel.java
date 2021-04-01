@@ -28,7 +28,6 @@ public class ImageViewModel extends AndroidViewModel implements LifecycleObserve
   private final MutableLiveData<User> user;
   private final MutableLiveData<List<Image>> images;
   private final MutableLiveData<Image> image;
-  private final MutableLiveData<Gallery> gallery;
   private final MutableLiveData<Throwable> throwable;
   private final CompositeDisposable pending;
 
@@ -42,7 +41,6 @@ public class ImageViewModel extends AndroidViewModel implements LifecycleObserve
     images = new MutableLiveData<>();
     throwable = new MutableLiveData<>();
     pending = new CompositeDisposable();
-    gallery = new MutableLiveData<>();
     loadImages();
   }
 
@@ -56,10 +54,6 @@ public class ImageViewModel extends AndroidViewModel implements LifecycleObserve
 
   public LiveData<Image> getImage() {
     return image;
-  }
-
-  public LiveData<Gallery> getGallery() {
-    return gallery;
   }
 
   public LiveData<Throwable> getThrowable() {
@@ -88,18 +82,6 @@ public class ImageViewModel extends AndroidViewModel implements LifecycleObserve
             )
     );
   }
-
-  // TODO Modify to receive gallery id.
-/*  public void storeImage(Uri uri, String title, String description) {
-    throwable.setValue(null);
-    pending.add(
-        imageRepository.add(uri, title, description)
-            .subscribe(
-                image::postValue,
-                throwable::postValue
-            )
-    );
-  }*/
 
   @OnLifecycleEvent(Event.ON_STOP)
   private void clearPending() {
