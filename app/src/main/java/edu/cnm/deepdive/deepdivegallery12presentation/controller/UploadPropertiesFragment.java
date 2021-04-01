@@ -8,6 +8,8 @@ import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -29,7 +31,6 @@ public class UploadPropertiesFragment extends DialogFragment implements TextWatc
 
   private FragmentUploadPropertiesBinding binding;
   private Uri uri;
-  private String imageId;
   private AlertDialog dialog;
   private GalleryViewModel galleryViewModel;
   private ImageViewModel imageViewModel;
@@ -41,7 +42,6 @@ public class UploadPropertiesFragment extends DialogFragment implements TextWatc
   public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
     //noinspection ConstantConditions
     uri = UploadPropertiesFragmentArgs.fromBundle(getArguments()).getContentUri();
-    imageId = UploadPropertiesFragmentArgs.fromBundle(getArguments()).getImageId();
     binding =
         FragmentUploadPropertiesBinding.inflate(LayoutInflater.from(getContext()), null, false);
     //noinspection ConstantConditions
@@ -52,7 +52,11 @@ public class UploadPropertiesFragment extends DialogFragment implements TextWatc
         .setNeutralButton(android.R.string.cancel, (dlg, which) -> {/* No need to do anything. */})
         .setPositiveButton(android.R.string.ok, (dlg, which) -> upload())
         .create();
-    dialog.setOnShowListener((dlg) -> checkSubmitConditions());
+    dialog.setOnShowListener((dlg) -> {
+      binding.title.addTextChangedListener(this);
+      binding.description.addTextChangedListener(this);
+      checkSubmitConditions();
+    });
     return dialog;
   }
 
@@ -69,17 +73,18 @@ public class UploadPropertiesFragment extends DialogFragment implements TextWatc
         .get()
         .load(uri)
         .into(binding.image);
-    binding.title.addTextChangedListener(this);
-    binding.description.addTextChangedListener(this);
-    binding.galleryTitle.addTextChangedListener(this);
     //noinspection ConstantConditions
     imageViewModel = new ViewModelProvider(getActivity()).get(ImageViewModel.class);
     galleryViewModel = new ViewModelProvider(getActivity()).get(GalleryViewModel.class);
     galleryViewModel.getGalleries().observe(getViewLifecycleOwner(),
         (galleries) -> {
-
-      UploadPropertiesFragment.this.galleries = galleries;
-    });
+          UploadPropertiesFragment.this.galleries = galleries;
+          AutoCompleteTextView simpleAutoText = binding.galleryTitle;
+          ArrayAdapter<Gallery> adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_list_item_1,
+              galleries);
+          simpleAutoText.setThreshold(1);
+          simpleAutoText.setAdapter(adapter);
+        });
   }
 
   @Override
